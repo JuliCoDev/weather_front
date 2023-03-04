@@ -4,14 +4,24 @@ import {
   } from "react-simple-maps";
 
 
-const CityMarker: React.FC<{ city: CityMarkerType }> = ({ city }) => {
+interface PropsCityMarker {
+    city: CityMarkerType 
+    selectCity : (name: string) => void
+}
+
+const CityMarker = (props :PropsCityMarker ) => {
+    const {city, selectCity} = props;
     const {name, coordinates,markerOffset} = city;
 
+    const handleClick = () => {
+        selectCity("miami");
+    }
     return(
         <Marker 
             key={name} 
             coordinates={coordinates}
             cursor="pointer"
+            onClick={() => {handleClick()}}
         >
             <circle 
                 r={10} 

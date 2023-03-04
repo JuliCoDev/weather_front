@@ -4,34 +4,53 @@ import {
   ComposableMap,
   Geographies,
   Geography,
-  Marker
 } from "react-simple-maps";
 import CityMarker from "./CityMarker";
+import { Weather } from "../../services/Weather";
+import { useEffect, useState } from "react";
 
 
 
+const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
+const citiesMarkers: CityMarkerType[] = [
+  {
+    "name": "Miami",
+    "coordinates": [-80.1918, 25.7617],
+    "markerOffset": -15,      
+  },
+  {
+    "name": "Orlando",
+    "coordinates": [-81.3792, 28.5383],
+    "markerOffset": -15
+  },
+  {
+    "name": "New York",
+    "coordinates": [-74.0059, 40.7128],
+    "markerOffset": -15
+}]; 
 
 
 function MapChart(){
-  const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
-  const citiesMarkers: CityMarkerType[] = [
-    {
-      "name": "Miami",
-      "coordinates": [-80.1918, 25.7617],
-      "markerOffset": -15,      
-    },
-    {
-      "name": "Orlando",
-      "coordinates": [-81.3792, 28.5383],
-      "markerOffset": -15
-    },
-    {
-      "name": "New York",
-      "coordinates": [-74.0059, 40.7128],
-      "markerOffset": -15
-  }]; 
 
+  const [city , setCity ] = useState(""); 
   
+  const selectCity = (name : string) =>{
+    setCity(name);
+    
+  }
+
+  useEffect(() => {
+    if(city !== ""){
+      Weather.getWeatherByCountry(city)
+      .then((response) => {
+          console.log(response.data.main)                
+      })
+      .catch((error) => 
+          console.log(error)
+      )
+    }
+  },[city])
+
   return(
     <ComposableMap
       projection="geoAzimuthalEqualArea"
@@ -43,6 +62,7 @@ function MapChart(){
       <Geographies geography={geoUrl}>
         {({ geographies }) =>
           geographies.map((geo) => {
+            
             return(
               <Geography
                 key={geo.rsmKey}
@@ -54,7 +74,7 @@ function MapChart(){
         }
       </Geographies>
       {citiesMarkers.map((city) => (
-          <CityMarker city={city}/>
+          <CityMarker key={city.name} city={city} selectCity={selectCity}/>
       ))}
     </ComposableMap>
   )
