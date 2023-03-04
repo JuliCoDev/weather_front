@@ -6,6 +6,7 @@ import {
   Geography,
   Marker
 } from "react-simple-maps";
+import CityMarker from "./CityMarker";
 
 
 
@@ -50,17 +51,8 @@ function MapChart(){
           ))
         }
       </Geographies>
-      {citiesMarkers.map(({ name, coordinates, markerOffset }) => (
-        <Marker key={name} coordinates={coordinates}>
-          <circle r={10} fill="#F00" stroke="#fff" strokeWidth={2} />
-          <text
-            textAnchor="middle"
-            y={markerOffset}
-            style={{ fontFamily: "system-ui", fill: "#5D5A6D" }}
-          >
-            {name}
-          </text>
-        </Marker>
+      {citiesMarkers.map((city) => (
+          <CityMarker city={city}/>
       ))}
     </ComposableMap>
   )
