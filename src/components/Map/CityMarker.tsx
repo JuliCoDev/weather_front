@@ -14,15 +14,15 @@ const CityMarker: React.FC<{ city: CityMarkerType }> = ({ city }) => {
             cursor="pointer"
         >
             <circle 
-            r={10} 
-            fill="#F00" 
-            stroke="#fff" 
-            strokeWidth={2} 
+                r={10} 
+                fill="#F00" 
+                stroke="#fff" 
+                strokeWidth={2} 
             />
             <text
-            textAnchor="middle"
-            y={markerOffset}
-            style={{ fontFamily: "system-ui", fill: "#5D5A6D" }}
+                textAnchor="middle"
+                y={markerOffset}
+                style={{ fontFamily: "system-ui", fill: "#5D5A6D" }}
             >
             {name}
             </text>

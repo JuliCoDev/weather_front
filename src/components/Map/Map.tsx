@@ -18,7 +18,7 @@ function MapChart(){
     {
       "name": "Miami",
       "coordinates": [-80.1918, 25.7617],
-      "markerOffset": -15
+      "markerOffset": -15,      
     },
     {
       "name": "Orlando",
@@ -31,6 +31,7 @@ function MapChart(){
       "markerOffset": -15
   }]; 
 
+  
   return(
     <ComposableMap
       projection="geoAzimuthalEqualArea"
@@ -41,14 +42,15 @@ function MapChart(){
     >
       <Geographies geography={geoUrl}>
         {({ geographies }) =>
-          geographies.map((geo) => (
-            <Geography
-              key={geo.rsmKey}
-              geography={geo}
-              fill="#EAEAEC"
-              stroke="#D6D6DA"
-            />
-          ))
+          geographies.map((geo) => {
+            return(
+              <Geography
+                key={geo.rsmKey}
+                geography={geo}
+                fill="#EAEAEC"
+                stroke="#D6D6DA"
+              />
+          )})
         }
       </Geographies>
       {citiesMarkers.map((city) => (

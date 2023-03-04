@@ -1,11 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import MapChart from './components/Map/Map';
 
 function App() {
   return (
-   <MapChart/>
+    <>
+      <h1 className='bg-red-500'>
+        Hola Mundo
+      </h1>
+      <MapChart/>
+    </>
   );
 }
 
