@@ -7,14 +7,17 @@ import {
 interface PropsCityMarker {
     city: CityMarkerType 
     selectCity : (name: string) => void
+    openModal : (value: boolean) => void
+
 }
 
 const CityMarker = (props :PropsCityMarker ) => {
-    const {city, selectCity} = props;
+    const {city, selectCity, openModal} = props;
     const {name, coordinates,markerOffset} = city;
 
     const handleClick = () => {
         selectCity("miami");
+        openModal(true)
     }
     return(
         <Marker 

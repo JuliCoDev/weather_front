@@ -8,6 +8,7 @@ import {
 import CityMarker from "./CityMarker";
 import { Weather } from "../../services/Weather";
 import { useEffect, useState } from "react";
+import ModalMap from "../Modal/ModalMap";
 
 
 
@@ -33,17 +34,15 @@ const citiesMarkers: CityMarkerType[] = [
 function MapChart(){
 
   const [city , setCity ] = useState(""); 
-  
-  const selectCity = (name : string) =>{
-    setCity(name);
-    
-  }
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [infoWeather, setInfoWeather] = useState({});
 
   useEffect(() => {
     if(city !== ""){
       Weather.getWeatherByCountry(city)
       .then((response) => {
-          console.log(response.data.main)                
+        setInfoWeather(response.data.main);             
       })
       .catch((error) => 
           console.log(error)
@@ -51,32 +50,46 @@ function MapChart(){
     }
   },[city])
 
+
+  const handleModal = (isOpen : boolean) => {
+    setModalIsOpen(isOpen);
+  }
+  
+  const selectCity = (name : string) =>{
+    setCity(name);
+    
+  }
+
+  const humityColor = {}
   return(
-    <ComposableMap
-      projection="geoAzimuthalEqualArea"
-      projectionConfig={{
-        rotate: [95, -40, 0],
-        scale: 1000
-      }}
-    >
-      <Geographies geography={geoUrl}>
-        {({ geographies }) =>
-          geographies.map((geo) => {
-            
-            return(
-              <Geography
-                key={geo.rsmKey}
-                geography={geo}
-                fill="#EAEAEC"
-                stroke="#D6D6DA"
-              />
-          )})
-        }
-      </Geographies>
-      {citiesMarkers.map((city) => (
-          <CityMarker key={city.name} city={city} selectCity={selectCity}/>
-      ))}
-    </ComposableMap>
+    <>
+      <ComposableMap
+        projection="geoAzimuthalEqualArea"
+        projectionConfig={{
+          rotate: [95, -40, 0],
+          scale: 1000
+        }}
+      >
+        <Geographies geography={geoUrl}>
+          {({ geographies }) =>
+            geographies.map((geo) => {
+              const isSea = geo.properties.ISO_A3 === '-99'; 
+              return(
+                <Geography
+                  key={geo.rsmKey}
+                  geography={geo}
+                  fill='#3df83d81'
+                  stroke="#D6D6DA"
+                />
+            )})
+          }
+        </Geographies>
+        {citiesMarkers.map((city) => (
+            <CityMarker key={city.name} city={city} selectCity={selectCity} openModal={handleModal}/>
+        ))}
+      </ComposableMap>
+      <ModalMap modalIsOpen={modalIsOpen} closeModal={handleModal} infoModal={infoWeather}/>
+    </>
   )
 }
 
