@@ -9,8 +9,9 @@ import CityMarker from "./CityMarker";
 import { Weather } from "../../services/Weather";
 import { useEffect, useState } from "react";
 import ModalMap from "../Modal/ModalMap";
-import ScaleHumity from "../ScaleHumity/ScaleHumity";
-import { WeatherResponseFromApi } from "../../services/typesSrvices";
+import { WeatherResponseFromApi  } from "../../services/typesSrvices";
+import { ColorCitiesData } from "./typesMap";
+import ContainerMap from "./styleComponents/ContainerMap";
 
 
 
@@ -66,9 +67,18 @@ function MapChart(){
     
   }
 
-  const humityColor = {}
+  const COLOR_CITIES : ColorCitiesData = {
+    "New York" : "#ffe9a1c9",
+    "Florida" : "#ffa4a1c9",
+
+  }
+
+  const  COLOR_CITIES_DEFAULT ="#216b2181";
+
+  
+
   return(
-    <>
+    <ContainerMap>
       <ComposableMap
         projection="geoAzimuthalEqualArea"
         projectionConfig={{
@@ -79,13 +89,12 @@ function MapChart(){
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
             geographies.map((geo) => {
-              const isSea = geo.properties.ISO_A3 === '-99'; 
               return(
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  fill='#3df83d81'
-                  stroke="#D6D6DA"
+                  fill={ COLOR_CITIES[geo.properties.name] || COLOR_CITIES_DEFAULT}
+                  stroke="#ffffff"
                 />
             )})
           }
@@ -95,15 +104,13 @@ function MapChart(){
         ))}
       </ComposableMap>
 
-      <ScaleHumity />
-
       {modalIsOpen &&
         <ModalMap modalIsOpen={modalIsOpen} closeModal={handleModal} infoModal={infoWeather}/>      
       }
       
 
 
-    </>
+    </ContainerMap>
   )
 }
 

@@ -7,3 +7,8 @@ export interface CityMarkerType {
     markerOffset: number;
 }
 
+export type ColorCitiesData = {
+    [key: string]: string;
+  }
+
+
