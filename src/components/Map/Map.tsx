@@ -9,6 +9,8 @@ import CityMarker from "./CityMarker";
 import { Weather } from "../../services/Weather";
 import { useEffect, useState } from "react";
 import ModalMap from "../Modal/ModalMap";
+import ScaleHumity from "../ScaleHumity/ScaleHumity";
+import { WeatherResponseFromApi } from "../../services/typesSrvices";
 
 
 
@@ -40,14 +42,17 @@ function MapChart(){
 
   useEffect(() => {
     if(city !== ""){
-      Weather.getWeatherByCountry(city)
-      .then((response) => {
-        setInfoWeather(response.data.main);             
-      })
-      .catch((error) => 
-          console.log(error)
-      )
+      const fetchWeather = ( ) : Promise<WeatherResponseFromApi> => { 
+      return Weather.getWeatherByCountry(city)
+            .then(response => response.data.main)
+            .catch((error) => 
+                console.log(error)
+            )}
+
+      fetchWeather()
+        .then(setInfoWeather)
     }
+
   },[city])
 
 
@@ -56,6 +61,7 @@ function MapChart(){
   }
   
   const selectCity = (name : string) =>{
+    console.log(name);
     setCity(name);
     
   }
@@ -88,7 +94,15 @@ function MapChart(){
             <CityMarker key={city.name} city={city} selectCity={selectCity} openModal={handleModal}/>
         ))}
       </ComposableMap>
-      <ModalMap modalIsOpen={modalIsOpen} closeModal={handleModal} infoModal={infoWeather}/>
+
+      <ScaleHumity />
+
+      {modalIsOpen &&
+        <ModalMap modalIsOpen={modalIsOpen} closeModal={handleModal} infoModal={infoWeather}/>      
+      }
+      
+
+
     </>
   )
 }

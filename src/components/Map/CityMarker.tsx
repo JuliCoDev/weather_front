@@ -16,7 +16,7 @@ const CityMarker = (props :PropsCityMarker ) => {
     const {name, coordinates,markerOffset} = city;
 
     const handleClick = () => {
-        selectCity("miami");
+        selectCity(name);
         openModal(true)
     }
     return(
