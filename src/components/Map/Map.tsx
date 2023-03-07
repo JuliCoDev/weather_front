@@ -20,16 +20,19 @@ const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";//Estad
 //Ciudades disponbles las cuales se les podra consultar el clima
 const citiesMarkers: CityMarkerType[] = [
   {
+    "cities_id" : 1,
     "name": "Miami",
     "coordinates": [-80.1918, 25.7617],
     "markerOffset": -15,      
   },
   {
+    "cities_id" : 2,
     "name": "Orlando",
     "coordinates": [-81.3792, 28.5383],
     "markerOffset": -15
   },
   {
+    "cities_id" : 3,
     "name": "New York",
     "coordinates": [-74.0059, 40.7128],
     "markerOffset": -15
@@ -38,16 +41,17 @@ const citiesMarkers: CityMarkerType[] = [
 
 function MapChart(){
 
-  const [city , setCity ] = useState(""); 
+  const [city , setCity ] = useState<any>(""); 
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [infoWeather, setInfoWeather] = useState({});//Información del clima por ciudad seleccionada
 
   useEffect(() => {
-    if(city !== ""){
-
+    
+    
+    if(city.name !== undefined){
       const fetchWeather = ( ) : Promise<WeatherResponseFromApi> => { 
-        return Weather.getWeatherByCountry(city)
+        return Weather.getWeatherByCountry(city.name)
             .then(response => response.data.main)
             .catch((error) => 
                 console.log(error)
@@ -56,8 +60,8 @@ function MapChart(){
         fetchWeather()
           .then(setInfoWeather);
       
-      
-        Weather.postWeatherHistory(infoWeather)
+          console.log({"cities_id" : city.cities_id , ...infoWeather})
+        Weather.postWeatherHistory({"cities_id" : city.cities_id , ...infoWeather})
         .then(function (response) {
           console.log(response);
         })
@@ -75,8 +79,8 @@ function MapChart(){
     setModalIsOpen(isOpen);
   }
   
-  const selectCity = (name : string) =>{
-    setCity(name);
+  const selectCity = (nameCity : string, idCity : number) =>{    
+    setCity({"name" : nameCity , "cities_id": idCity});
     
   }
 
@@ -113,7 +117,7 @@ function MapChart(){
           }
         </Geographies>
         {citiesMarkers.map((city) => (
-            <CityMarker key={city.name} city={city} selectCity={selectCity} openModal={handleModal}/>
+            <CityMarker key={city.cities_id} city={city} selectCity={selectCity} openModal={handleModal}/>
         ))}
       </ComposableMap>
 

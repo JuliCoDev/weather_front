@@ -6,17 +6,16 @@ import {
 
 interface PropsCityMarker {
     city: CityMarkerType 
-    selectCity : (name: string) => void
+    selectCity : (name: string, id : number) => void
     openModal : (value: boolean) => void
 
 }
 
 const CityMarker = (props :PropsCityMarker ) => {
     const {city, selectCity, openModal} = props;
-    const {name, coordinates,markerOffset} = city;
-
-    const handleClick = () => {
-        selectCity(name);
+    const {cities_id, name, coordinates,markerOffset} = city;
+    const handleClick = () => {                
+        selectCity(name , cities_id);
         openModal(true)
     }
     return(

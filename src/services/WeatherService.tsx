@@ -7,7 +7,7 @@ export const Weather = {
     },
 
     postWeatherHistory : async (data : object) =>{
-        // console.log(data)
+        console.log(data)
         return await api.post("/weather" , data);
     },
 }
