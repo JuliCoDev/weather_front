@@ -5,5 +5,6 @@ export interface WeatherResponseFromApi {
     temp_max: number;
     pressure: number;
     humidity: number;
+    created_at?: any;
 }
   

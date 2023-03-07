@@ -1,4 +1,5 @@
 import Modal from 'react-modal';
+import CardWeather from '../CardWather/CardWeather';
 
 // interface PropsModal {
 //   modalIsOpen : boolean
@@ -8,7 +9,7 @@ import Modal from 'react-modal';
 
 
 function ModalMap(props) {
-  const {modalIsOpen, closeModal} = props
+  const {modalIsOpen, closeModal, infoModal, city} = props
  
 
 
@@ -28,7 +29,7 @@ function ModalMap(props) {
         >          
         X
       </button>
-      
+      <CardWeather info={infoModal} title={city} /> 
       
       
     </Modal>

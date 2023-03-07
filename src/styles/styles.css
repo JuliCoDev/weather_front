@@ -563,6 +563,10 @@ video {
   margin: auto;
 }
 
+.m-8 {
+  margin: 2rem;
+}
+
 .mx-8 {
   margin-left: 2rem;
   margin-right: 2rem;
@@ -622,6 +626,10 @@ video {
 
 .w-full {
   width: 100%;
+}
+
+.w-\[70\%\] {
+  width: 70%;
 }
 
 .table-fixed {
@@ -719,6 +727,10 @@ video {
 }
 
 @media (min-width: 768px) {
+  .md\:w-\[70\%\] {
+    width: 70%;
+  }
+
   .md\:max-w-\[70\%\] {
     max-width: 70%;
   }

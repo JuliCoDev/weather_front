@@ -13,31 +13,10 @@ import { WeatherResponseFromApi  } from "../../services/typesSrvices";
 import { ColorCitiesData } from "./typesMap";
 import ContainerMap from "./styleComponents/ContainerMap";
 import { Cities } from "../../services/CityServices";
+import useWeather from "../../hooks/useWather";
 
 
-
-const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";//Estados de estado inidos
-
-//Ciudades disponbles las cuales se les podra consultar el clima
-// const citiesMarkers: CityMarkerType[] = [
-//   {
-//     "cities_id" : 1,
-//     "name": "Miami",
-//     "coordinates": [-80.1918, 25.7617],
-//     "markerOffset": -15,      
-//   },
-//   {
-//     "cities_id" : 2,
-//     "name": "Orlando",
-//     "coordinates": [-81.3792, 28.5383],
-//     "markerOffset": -15
-//   },
-//   {
-//     "cities_id" : 3,
-//     "name": "New York",
-//     "coordinates": [-74.0059, 40.7128],
-//     "markerOffset": -15
-// }]; 
+const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";//Estados de estados unidos
 
 
 function MapChart(){
@@ -45,7 +24,7 @@ function MapChart(){
   const [city , setCity ] = useState<any>(""); 
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [infoWeather, setInfoWeather] = useState({});//Información del clima por ciudad seleccionada
+  const {infoWeather, cityName} = useWeather(city)//Información del clima por ciudad seleccionada
   const [citiesMarkers, setCitiesMarkers]= useState<any>([]);
 
   useEffect(() => {
@@ -61,33 +40,7 @@ function MapChart(){
           .then(setCitiesMarkers);
   },[])
 
-  useEffect(() => {
-    
-    
-    if(city.name !== undefined){
-      //GET Información del clima la cual se hizo clic
-      const fetchWeather = ( ) : Promise<WeatherResponseFromApi> => { 
-        return Weather.getWeatherByCountry(city.name)
-            .then(response => response.data.main)
-            .catch((error) => 
-                console.log(error)
-            )}
-
-        fetchWeather()
-          .then(setInfoWeather);
-      
-        
-        //POST Información del clima la cual se hizo clic
-        Weather.postWeatherHistory({"cities_id" : city.cities_id , ...infoWeather})
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
-
-  },[city])
+ 
 
 
 
@@ -139,7 +92,7 @@ function MapChart(){
       </ComposableMap>
 
       {modalIsOpen &&
-        <ModalMap modalIsOpen={modalIsOpen} closeModal={handleModal} infoModal={infoWeather}/>      
+        <ModalMap modalIsOpen={modalIsOpen} closeModal={handleModal} infoModal={infoWeather} city={cityName}/>      
       }
       
 
