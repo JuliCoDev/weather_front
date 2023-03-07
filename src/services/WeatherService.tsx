@@ -6,8 +6,11 @@ export const Weather = {
         return await openweathermap.get(`?q=${country}&units=metric`);
     },
 
-    postWeatherHistory : async (data : object) =>{
-        console.log(data)
+    postWeatherHistory : async (data : object) =>{        
         return await api.post("/weather" , data);
+    },
+
+    getWeatherHistory : async () =>{        
+        return await api.get("/weather");
     },
 }

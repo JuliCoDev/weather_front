@@ -13,7 +13,9 @@ interface PropsCityMarker {
 
 const CityMarker = (props :PropsCityMarker ) => {
     const {city, selectCity, openModal} = props;
-    const {cities_id, name, coordinates,markerOffset} = city;
+    const {cities_id, name, latitude, longitude,markerOffset} = city;
+    
+
     const handleClick = () => {                
         selectCity(name , cities_id);
         openModal(true)
@@ -21,7 +23,7 @@ const CityMarker = (props :PropsCityMarker ) => {
     return(
         <Marker 
             key={name} 
-            coordinates={coordinates}
+            coordinates={[latitude , longitude]}
             cursor="pointer"
             onClick={() => {handleClick()}}
         >

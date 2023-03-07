@@ -1,10 +1,10 @@
 
-type Coordinates = [number, number];
 
 export interface CityMarkerType {
     cities_id: number
-    name: string
-    coordinates: Coordinates
+    name: string,
+    latitude : number,
+    longitude: number
     markerOffset: number
 }
 
