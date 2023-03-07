@@ -19,6 +19,7 @@ function ModalMap(props) {
     <Modal 
       isOpen={modalIsOpen}
       onRequestClose={() => closeModal(false)}
+      ariaHideApp={false}
       className="m-auto w-[80%] bg-gray-100 mt-[100px] shadow-lg p-[10px]"
       >
       <button 

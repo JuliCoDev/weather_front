@@ -6,7 +6,7 @@ import {
   Geography,
 } from "react-simple-maps";
 import CityMarker from "./CityMarker";
-import { Weather } from "../../services/Weather";
+import { Weather } from "../../services/WeatherService";
 import { useEffect, useState } from "react";
 import ModalMap from "../Modal/ModalMap";
 import { WeatherResponseFromApi  } from "../../services/typesSrvices";
@@ -15,7 +15,9 @@ import ContainerMap from "./styleComponents/ContainerMap";
 
 
 
-const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
+const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";//Estados de estado inidos
+
+//Ciudades disponbles las cuales se les podra consultar el clima
 const citiesMarkers: CityMarkerType[] = [
   {
     "name": "Miami",
@@ -39,22 +41,34 @@ function MapChart(){
   const [city , setCity ] = useState(""); 
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [infoWeather, setInfoWeather] = useState({});
+  const [infoWeather, setInfoWeather] = useState({});//Información del clima por ciudad seleccionada
 
   useEffect(() => {
     if(city !== ""){
+
       const fetchWeather = ( ) : Promise<WeatherResponseFromApi> => { 
-      return Weather.getWeatherByCountry(city)
+        return Weather.getWeatherByCountry(city)
             .then(response => response.data.main)
             .catch((error) => 
                 console.log(error)
             )}
 
-      fetchWeather()
-        .then(setInfoWeather)
+        fetchWeather()
+          .then(setInfoWeather);
+      
+      
+        Weather.postWeatherHistory(infoWeather)
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
 
   },[city])
+
+
 
 
   const handleModal = (isOpen : boolean) => {
@@ -62,7 +76,6 @@ function MapChart(){
   }
   
   const selectCity = (name : string) =>{
-    console.log(name);
     setCity(name);
     
   }
